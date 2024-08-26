@@ -111,7 +111,7 @@ We have provided a few NGINX instances below for you to use for the remainder of
                 {name: "NGINX_AGENT_SERVER_TOKEN", isVariable: true, isSecret: true},
             ]}
             attrs={[
-                { name: "volume", value: "/tmp/ssl:/etc/nginx/ssl" }
+                { name: "volume", value: "./ssl:/etc/nginx/ssl" }
             ]}
         />
         <Docker 
@@ -126,7 +126,7 @@ We have provided a few NGINX instances below for you to use for the remainder of
                 {name: "NGINX_AGENT_SERVER_TOKEN", isVariable: true, isSecret: true},
             ]}
             attrs={[
-                { name: "volume", value: "/tmp/ssl:/etc/nginx/ssl" }
+                { name: "volume", value: "./ssl:/etc/nginx/ssl" }
             ]}
         />
 
@@ -142,7 +142,7 @@ We have provided a few NGINX instances below for you to use for the remainder of
                 {name: "NGINX_AGENT_SERVER_TOKEN", isVariable: true, isSecret: true},
             ]}
             attrs={[
-                { name: "volume", value: "/tmp/ssl:/etc/nginx/ssl" }
+                { name: "volume", value: "./ssl:/etc/nginx/ssl" }
             ]}
         />
     </DockerContainer>
