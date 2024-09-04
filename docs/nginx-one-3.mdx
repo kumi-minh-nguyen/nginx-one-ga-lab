@@ -61,7 +61,7 @@ Config Sync Group you created above. In the command below, confirm the following
     - Confirm the **Config Sync Group Name** (the variable after the **-c** switch) is the name of the Config Sync Group you just created above.
 
     ```bash
-    curl https://agent.connect.nginx.com/nginx-agent/install | DATA_PLANE_KEY='{{NGINX_AGENT_SERVER_TOKEN}}' sh -s -- -y -c {{petname}}-ubuntu-plus
+    curl https://agent.connect.nginx.com/nginx-agent/install | DATA_PLANE_KEY='{{NGINX_AGENT_SERVER_TOKEN}}' sh -s -- -y -c {{petname}}-manual
     ```
 
     > Note: Make sure you are working on the NGINX Plus instance; if you accidentally install on the **Lab Framework**, the installation will succeed, but there will be no NGINX instance for the agent to connect to and the instance will appear as "Offline". If this occurs, return to the [directions in lab 1](nginx-one-1.mdx#generating-a-data-plane-key) to create a new Data Plane Key.
@@ -122,7 +122,7 @@ command below and confirm the following substitutions:
     --env=NMS_SERVER_GRPCPORT=443 \
     --env=NMS_SERVER_HOST=agent.connect.nginx.com \
     --env=NMS_SERVER_TOKEN="{{NGINX_AGENT_SERVER_TOKEN}}" \
-    --env=NGINX_AGENT_INSTANCE_GROUP={{petname}}-ubuntu-plus \
+    --env=NGINX_AGENT_INSTANCE_GROUP={{petname}}-manual \
     --env=NMS_TLS_ENABLE=true \
     --restart=always \
     --runtime=runc \
