@@ -1,0 +1,112 @@
+---
+title: NGINX One Console Lab - Part 5
+description: Managing NGINX ONE Config Sync Group with NGINX Declarative API
+order: 5
+---
+
+## What is NGINX Declarative API (DAPI)? 
+
+This project provides a set of declarative REST API for NGINX Instance Manager and NGINX One Console
+
+It can be used to manage NGINX Plus configuration lifecycle and to create NGINX Plus configurations using JSON service definitions.
+
+GitOps integration is supported: source of truth is checked for updates (NGINX App Protect policies, TLS certificates, keys and chains/bundles, Swagger/OpenAPI definitions, snippets) and NGINX configurations are automatically kept in sync.
+
+To find out more, visit its [Github](https://github.com/f5devcentral/NGINX-Declarative-API) page
+
+![DAPI high-level diagram](media/part5-01.png)
+
+## How to configure DAPI to talk to NGINX ONE?
+
+- Add NGINX Instances to a config sync group
+- Generate API Token for DAPI
+- Input values for DAPI API request
+
+## Lab overview
+
+In this exercise, you will use Postman to send a DAPI request to NGINX ONE, populating the full configuration for an NGINX API Gateway based on the Petstore OpenAPI schema. 
+This configuration will then be retrieved by NGINX instances through the NGINX Agent, which connects them to NGINX ONE. 
+You can either install Postman on your computer or use its web version. Check out [Postman](https://www.postman.com/) official page here.
+
+## Step-by-step instructions
+
+1. Create an NGINX ONE Config Sync Group
+
+    > :warning: **Warning:** You are working on a shared tenant. Follow the naming convention to avoid conflicts with the work of other users.
+    - In NGINX ONE console, choose **Config Sync Group** in the left hand side
+    - Click on the (+) side next to **Add Config Sync Group**
+    - Your should name your config sync group: **<GetVariable name="petname" />-expansion**
+
+1. Generate curl command to add NGINX Instances to Config Sync Group
+
+    - Look on the left hand side, choose **Config Sync Group**
+    - Find the name of your config sync group in the list, and click on it to go to its **Details** tab
+    - Scroll down to **Instances**, click on the (+) side of **Add Instance to Config Sync Group**
+    - Choose **Register a new instance with NGINX ONE then add to config sync group** and click **Next**
+    - Choose **Generate new key**, click on the (+) side of **Generate Data Plane Key**
+    - Save the curl command in your notepad
+    - Click **Done** to close the sliding panel
+
+1. Add NGINX instance into Config Sync Group
+   
+    - Go to **Lab components**, look for **NGINX Expansion** VM, access it with **Web Shell** method.
+    - Change the VM hostname to make it unique in the shared tenant: `hostnamectl set-hostname` **<GetVariable name="petname" />-nginx-expansion**.
+    - Close the Web Shell and log in again to see the changes.
+    - Copy and run the curl command in your NGINX instance terminal to register the instance with NGINX One. The Data Plane key is included in the command.
+
+1. Generate API Token for DAPI
+    - Back to NGINX ONE console, on the top right corner, click on the human icon and choose **Account Settings** 
+    - On the left side, under **Personal Management**, choose **Credentials** 
+    - Click on the (+) side next to **Add Credentials**
+    - Fill in values for **Credential Name** (you can use **<GetVariable name="petname" />-dapi**) , **Credential Type** set to *API Token* , **Expiry Date** set to maximum 1 year later.
+    - Click **Generate**
+    > :point_right: **Note:** Save the API Token in your notepad 
+
+1. Input values for DAPI API request
+    - From DAPI Github, download the [postman collection](https://raw.githubusercontent.com/f5devcentral/NGINX-Declarative-API/refs/heads/main/contrib/postman/NGINX%20Declarative%20API.postman_collection.json) to your computer
+    - Import it into Postman
+    - On the left hand side, click on the collection name **NGINX Declative API**
+    - On the right hand side, choose **Variables** tab, fill in the below fields for **Current value** column
+        - **ncg_host**: URL without *https://* from VM Lab Extension **Postman** access method
+![Postman Access Method](media/part5-02.png)
+        - **ncg_port**: 443
+        - **nginx_license_token** : If you're running NGINX R33, this is the NGINX JWT license token. Use this JWT for this lab:
+
+    *eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6InYxIiwiamt1IjoiaHR0cHM6Ly9wcm9kdWN0LmFwaXMuZjUuY29tL2VlL3YxL2tleXMvandrcyJ9.eyJzdWIiOiJGTkktOGRiOWMwN2YtNTYxMy00NDJmLWFlYWYtZDJmNDBjMDYwNDY1IiwiaWF0IjoxNzQwMzg0MjQ5LCJpc3MiOiJGNSBJbmMuIiwiYXVkIjoidXJuOmY1OnRlZW0iLCJqdGkiOiJlZDYyNGZiMC1mMjg1LTExZWYtYTViNS0zZjVjMTdjZDA2NmUiLCJmNV9vcmRlcl90eXBlIjoiZXZhbCIsImY1X3NhdCI6MTc0Mjk3NjI0OX0.eFgjxDvSDVrE93f1cc35e-ezvhcKKu03K4rHP0m9YEbE1i6xEkaB3Yex-Out0qO2opcHP9WL33Meu19QVSo5X-tRJqoeMA0f4v37KjPR-k0GaK9yWgJFTcXtL8rsxst9QT7QGllRjgIkIW8LtgsT0EffCL98AaUKCroDIN1RwIZXMg-ra8-S-QvwQPqIpNTpMen2FGat_N0x4C8QhzoimH5x822pSUD1Vru6IarW-KzomQFQYIfgqBgw9vhsdQH6wCjNzklhQasHfbTnPPovdgpW_7VvTzOim2Yhb94e3Zw6my_2mwOeJgzOe2hF7s7E3Q31V4_-sw-G-QzT6nWAPZejPBEYC16tCmVHUfQW3jUDayGAjQyvdpIQyHK1AayZy_pEtpsPnpNSHnjv-N9pisuCKQchh-490tODkvOw4uDwB-ghlg5gjEeR1KnBj-EG9nmXqvOLL5CVR-gkr9XFJNIYB5d6GaP1SMQSOYhGFiMTOo0mExShhn5lpunbDiwehehTIt48fPY-4SKrcr7jVaJyYSgbdAUTvKOE60rT00z8GCBzAOk_boveSPGcrqVIrcXh_6M-aG_g1FlVK_lklI1wbTocWqzkdAk-sZ5uww3A0t66zM-v0o8wj3s_cENU5UwfFmPKeTqtPnLUBkt0s87OTLRsf-PbN4GJhAEFoUE*
+        - **nginxone_configsyncgroup** : Name of the config sync group your NGINX Instances belong to
+        - **nginxone_url**: *https://URL*  of your NGINX One Console tenant, for this lab use *https://f5-xc-lab-app.console.ves.volterra.io*
+        - **nginxone_token**: the DAPI API token you create in previous step to authenticate DAPI with XC/NGINX One Console. 
+
+1. Form the API request
+    - Open up Postman collection, click on **v5.2** > **NGINX ONE Console** > **Petstore API** > **API Client test requests**
+    - Choose **Petstore API Gateway RateLimit + JWT AuthN/AuthZ + redocly**
+    - The installed NGINX version in NGINX Expansion VM is R33, so you will need send JWT license in your request.
+    - Open the body of chosen API request, at line 27, put a `,` after the `}`, and right below line 27, insert this portion:
+    ```
+    "license": {
+        "endpoint": "{{nginx_reporting_server}}",
+        "token": "{{nginx_license_token}}",
+        "ssl_verify": false,
+        "grace_period": false
+    }
+    ```
+    - Under **declaration**, **servers**, your request should look like this:
+    ![postman-declaration-server-name](media/part5-03.png)
+    - Under **locations**, your request should look like this:
+    ![postman-location](media/part5-04.png)
+    - The last part of your request should look like this:
+    ![postman-last-part](media/part5-05.png)
+    - You are ready to send the request to NGINX ONE!
+    - If successful, you will get a response like below:
+    ![postman-success](media/part5-06.png)
+
+1. Test your API Gateway
+    - Back to NGINX ONE console, check out the configuration generated for you config sync group.
+    Review and understand what it is doing.
+    - Back to Web Shell of NGINX Expansion VM
+    - Run this curl commmand `curl -k -X GET "https://apigw.nginx.lab/petstore/pet/1" | jq`
+    - If you get back some data, congratulations for finishing part 5! :coffee:
+
+## Moving on
+Part 6 of the lab is focused on extending the obversability of NGINX Plus with Prometheus and Grafana.
+[Proceed to part 6 of the lab](./nginx-one-6.mdx).
