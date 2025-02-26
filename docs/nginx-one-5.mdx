@@ -1,6 +1,6 @@
 ---
 title: NGINX One Console Lab - Part 5
-description: Managing NGINX ONE Config Sync Group with NGINX Declarative API
+description: Manage NGINX ONE Config Sync Group with NGINX Declarative API
 order: 5
 ---
 
@@ -13,21 +13,22 @@ It can be used to manage NGINX Plus configuration lifecycle and to create NGINX 
 GitOps integration is supported: source of truth is checked for updates (NGINX App Protect policies, TLS certificates, keys and chains/bundles, Swagger/OpenAPI definitions, snippets) and NGINX configurations are automatically kept in sync.
 
 To find out more, visit its [Github](https://github.com/f5devcentral/NGINX-Declarative-API) page
-
 ![DAPI high-level diagram](media/part5-01.png)
 
-## How to configure DAPI to talk to NGINX ONE?
+## How to configure DAPI to communicate with NGINX ONE?
 
 - Add NGINX Instances to a config sync group
 - Generate API Token for DAPI
-- Input values for DAPI API request
+- Input values for DAPI API request and send it
 
 ## Lab overview
 
 In this exercise, you will use Postman to send a DAPI request to NGINX ONE, populating the full configuration for an NGINX API Gateway based on the Petstore OpenAPI schema. 
 This configuration will then be retrieved by NGINX instances through the NGINX Agent, which connects them to NGINX ONE. 
 You can either install Postman on your computer or use its web version. Check out [Postman](https://www.postman.com/) official page here.
-
+    - Application flow: **Client sends request** > **NGINX API Gateway** (host apigw.nginx.lab on port 443) > **Petstore Backend** (host petstore.nginx.lab on port 8080)  
+    - Config creation flow: **DAPI API sends request** > **NGINX ONE** > **NGINX Agent detects config changes** > New config is pushed to **NGINX instances**
+ 
 ## Step-by-step instructions
 
 1. Create an NGINX ONE Config Sync Group
@@ -66,20 +67,23 @@ You can either install Postman on your computer or use its web version. Check ou
     - From DAPI Github, download the [postman collection](https://raw.githubusercontent.com/f5devcentral/NGINX-Declarative-API/refs/heads/main/contrib/postman/NGINX%20Declarative%20API.postman_collection.json) to your computer
     - Import it into Postman
     - On the left hand side, click on the collection name **NGINX Declative API**
-    - On the right hand side, choose **Variables** tab, fill in the below fields for **Current value** column
+    - On the right hand side, choose **Variables** tab, provide values for some fields in the **Current value** column
+        ![Postman Variables](media/part5-02.png)
         - **ncg_host**: URL without *https://* from VM Lab Extension **Postman** access method
-![Postman Access Method](media/part5-02.png)
+        
+        ![Postman Access Method](media/part5-03.png)
         - **ncg_port**: 443
-        - **nginx_license_token** : If you're running NGINX R33, this is the NGINX JWT license token. Use this JWT for this lab:
+        - **nginx_license_token** : If you're running NGINX R33, this is the NGINX JWT license token. Use the below JWT for this lab:
 
-    *eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6InYxIiwiamt1IjoiaHR0cHM6Ly9wcm9kdWN0LmFwaXMuZjUuY29tL2VlL3YxL2tleXMvandrcyJ9.eyJzdWIiOiJGTkktOGRiOWMwN2YtNTYxMy00NDJmLWFlYWYtZDJmNDBjMDYwNDY1IiwiaWF0IjoxNzQwMzg0MjQ5LCJpc3MiOiJGNSBJbmMuIiwiYXVkIjoidXJuOmY1OnRlZW0iLCJqdGkiOiJlZDYyNGZiMC1mMjg1LTExZWYtYTViNS0zZjVjMTdjZDA2NmUiLCJmNV9vcmRlcl90eXBlIjoiZXZhbCIsImY1X3NhdCI6MTc0Mjk3NjI0OX0.eFgjxDvSDVrE93f1cc35e-ezvhcKKu03K4rHP0m9YEbE1i6xEkaB3Yex-Out0qO2opcHP9WL33Meu19QVSo5X-tRJqoeMA0f4v37KjPR-k0GaK9yWgJFTcXtL8rsxst9QT7QGllRjgIkIW8LtgsT0EffCL98AaUKCroDIN1RwIZXMg-ra8-S-QvwQPqIpNTpMen2FGat_N0x4C8QhzoimH5x822pSUD1Vru6IarW-KzomQFQYIfgqBgw9vhsdQH6wCjNzklhQasHfbTnPPovdgpW_7VvTzOim2Yhb94e3Zw6my_2mwOeJgzOe2hF7s7E3Q31V4_-sw-G-QzT6nWAPZejPBEYC16tCmVHUfQW3jUDayGAjQyvdpIQyHK1AayZy_pEtpsPnpNSHnjv-N9pisuCKQchh-490tODkvOw4uDwB-ghlg5gjEeR1KnBj-EG9nmXqvOLL5CVR-gkr9XFJNIYB5d6GaP1SMQSOYhGFiMTOo0mExShhn5lpunbDiwehehTIt48fPY-4SKrcr7jVaJyYSgbdAUTvKOE60rT00z8GCBzAOk_boveSPGcrqVIrcXh_6M-aG_g1FlVK_lklI1wbTocWqzkdAk-sZ5uww3A0t66zM-v0o8wj3s_cENU5UwfFmPKeTqtPnLUBkt0s87OTLRsf-PbN4GJhAEFoUE*
+`eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6InYxIiwiamt1IjoiaHR0cHM6Ly9wcm9kdWN0LmFwaXMuZjUuY29tL2VlL3YxL2tleXMvandrcyJ9.eyJzdWIiOiJGTkktOGRiOWMwN2YtNTYxMy00NDJmLWFlYWYtZDJmNDBjMDYwNDY1IiwiaWF0IjoxNzQwMzg0MjQ5LCJpc3MiOiJGNSBJbmMuIiwiYXVkIjoidXJuOmY1OnRlZW0iLCJqdGkiOiJlZDYyNGZiMC1mMjg1LTExZWYtYTViNS0zZjVjMTdjZDA2NmUiLCJmNV9vcmRlcl90eXBlIjoiZXZhbCIsImY1X3NhdCI6MTc0Mjk3NjI0OX0.eFgjxDvSDVrE93f1cc35e-ezvhcKKu03K4rHP0m9YEbE1i6xEkaB3Yex-Out0qO2opcHP9WL33Meu19QVSo5X-tRJqoeMA0f4v37KjPR-k0GaK9yWgJFTcXtL8rsxst9QT7QGllRjgIkIW8LtgsT0EffCL98AaUKCroDIN1RwIZXMg-ra8-S-QvwQPqIpNTpMen2FGat_N0x4C8QhzoimH5x822pSUD1Vru6IarW-KzomQFQYIfgqBgw9vhsdQH6wCjNzklhQasHfbTnPPovdgpW_7VvTzOim2Yhb94e3Zw6my_2mwOeJgzOe2hF7s7E3Q31V4_-sw-G-QzT6nWAPZejPBEYC16tCmVHUfQW3jUDayGAjQyvdpIQyHK1AayZy_pEtpsPnpNSHnjv-N9pisuCKQchh-490tODkvOw4uDwB-ghlg5gjEeR1KnBj-EG9nmXqvOLL5CVR-gkr9XFJNIYB5d6GaP1SMQSOYhGFiMTOo0mExShhn5lpunbDiwehehTIt48fPY-4SKrcr7jVaJyYSgbdAUTvKOE60rT00z8GCBzAOk_boveSPGcrqVIrcXh_6M-aG_g1FlVK_lklI1wbTocWqzkdAk-sZ5uww3A0t66zM-v0o8wj3s_cENU5UwfFmPKeTqtPnLUBkt0s87OTLRsf-PbN4GJhAEFoUE`
         - **nginxone_configsyncgroup** : Name of the config sync group your NGINX Instances belong to
         - **nginxone_url**: *https://URL*  of your NGINX One Console tenant, for this lab use *https://f5-xc-lab-app.console.ves.volterra.io*
         - **nginxone_token**: the DAPI API token you create in previous step to authenticate DAPI with XC/NGINX One Console. 
 
 1. Form the API request
     - Open up Postman collection, click on **v5.2** > **NGINX ONE Console** > **Petstore API** > **API Client test requests**
-    - Choose **Petstore API Gateway RateLimit + JWT AuthN/AuthZ + redocly**
+    - Choose **Petstore API Gateway RateLimit + JWT AuthN/AuthZ + redocly**. 
+    We are going to make a few modifications to make it work with our backend setup.
     - The installed NGINX version in NGINX Expansion VM is R33, so you will need send JWT license in your request.
     - Open the body of chosen API request, at line 27, put a `,` after the `}`, and right below line 27, insert this portion:
     ```
@@ -90,22 +94,27 @@ You can either install Postman on your computer or use its web version. Check ou
         "grace_period": false
     }
     ```
+    - After the above modification, the **license** part should be at the same level as **nginxone** part like this:
+    ![postman-jwt-license](media/part5-04.png)
     - Under **declaration**, **servers**, your request should look like this:
-    ![postman-declaration-server-name](media/part5-03.png)
+    ![postman-declaration-server-name](media/part5-05.png)
     - Under **locations**, your request should look like this:
-    ![postman-location](media/part5-04.png)
+    ![postman-location](media/part5-06.png)
     - The last part of your request should look like this:
-    ![postman-last-part](media/part5-05.png)
+    ![postman-last-part](media/part5-07.png)
     - You are ready to send the request to NGINX ONE!
     - If successful, you will get a response like below:
-    ![postman-success](media/part5-06.png)
+    ![postman-success](media/part5-08.png)
 
 1. Test your API Gateway
     - Back to NGINX ONE console, check out the configuration generated for you config sync group.
     Review and understand what it is doing.
     - Back to Web Shell of NGINX Expansion VM
     - Run this curl commmand `curl -k -X GET "https://apigw.nginx.lab/petstore/pet/1" | jq`
-    - If you get back some data, congratulations for finishing part 5! :coffee:
+    - If you get back some data, congratulations, your API Gateway works! :sunglasses:
+    - Last step, you can generate more traffic, which will be useful for visualization in the next part.
+    
+    `wrk -t4 -c1000 -d30s --latency "https://apigw.nginx.lab/petstore/pet/1"`
 
 ## Moving on
 Part 6 of the lab is focused on extending the obversability of NGINX Plus with Prometheus and Grafana.
