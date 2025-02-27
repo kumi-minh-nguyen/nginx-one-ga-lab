@@ -85,17 +85,9 @@ You can either install Postman on your computer or use its web version. Check ou
     - Choose **Petstore API Gateway RateLimit + JWT AuthN/AuthZ + redocly**. 
     We are going to make a few modifications to make it work with our backend setup.
     - The installed NGINX version in NGINX Expansion VM is R33, so you will need send JWT license in your request.
-    - Open the body of chosen API request, at line 27, put a `,` after the `}`, and right below line 27, insert this portion:
-    ```
-    "license": {
-        "endpoint": "{{nginx_reporting_server}}",
-        "token": "{{nginx_license_token}}",
-        "ssl_verify": false,
-        "grace_period": false
-    }
-    ```
-    - After the above modification, the **license** part should be at the same level as **nginxone** part like this:
+    - Open the body of chosen API request, add the **license** part ***(line 28-33)*** at the same level as **nginxone** part like this:
     ![postman-jwt-license](media/part5-04.png)
+    >:warning: **Warning**: do not forget the `,` after the `}` at line 27 before adding **license** part.
     - Under **declaration**, **servers**, your request should look like this:
     ![postman-declaration-server-name](media/part5-05.png)
     - Under **locations**, your request should look like this:
