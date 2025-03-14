@@ -50,7 +50,12 @@ You can either install Postman on your computer or use its web version. Check ou
 
 1. Add NGINX instance into Config Sync Group
    
-    - Go to **Lab components**, look for **NGINX Expansion** VM, access it with **Web Shell** method.
+    - Connect to the "NGINX Expansion" instance in UDF through the Web Shell access method by clicking the *Open Web Shell* button below:
+
+    <UDFComponent
+        name="NGINX Expansion"
+    />
+
     - Change the VM hostname to make it unique in the shared tenant: 
     ```bash
     hostnamectl set-hostname **<GetVariable name="petname" />-nginx-expansion**.
@@ -105,11 +110,20 @@ You can either install Postman on your computer or use its web version. Check ou
     - Back to NGINX ONE console, check out the configuration generated for you config sync group.
     Review and understand what it is doing.
     - Back to Web Shell of NGINX Expansion VM
-    - Run this curl commmand `curl -k -X GET "https://apigw.nginx.lab/petstore/pet/1" | jq`
+
+    <UDFComponent
+        name="NGINX Expansion"
+    />
+
+    - Run this curl commmand
+    ```bash
+    curl -k -X GET "https://apigw.nginx.lab/petstore/pet/1" | jq
+    ```
     - If you get back some data, congratulations, your API Gateway works! :sunglasses:
     - Last step, you can generate more traffic, which will be useful for visualization in the next part.
-    
-    `wrk -t4 -c1000 -d30s --latency "https://apigw.nginx.lab/petstore/pet/1"`
+    ```bash
+    wrk -t4 -c1000 -d30s --latency "https://apigw.nginx.lab/petstore/pet/1"
+    ```
 
 ## Moving on
 Part 6 of the lab is focused on extending the obversability of NGINX Plus with Prometheus and Grafana.
