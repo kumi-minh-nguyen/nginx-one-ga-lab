@@ -56,7 +56,7 @@ You can either install Postman on your computer or use its web version. Check ou
         name="NGINX Expansion"
     />
 
-    - Change the VM hostname to make it unique in the shared tenant: 
+    - Change the VM hostname to make it unique in the shared tenant, starts with **<GetVariable name="petname"/>**
     ```bash
     hostnamectl set-hostname {{petname}}-nginx-expansion
     ```
