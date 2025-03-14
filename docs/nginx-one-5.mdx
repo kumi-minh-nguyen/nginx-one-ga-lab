@@ -58,7 +58,7 @@ You can either install Postman on your computer or use its web version. Check ou
 
     - Change the VM hostname to make it unique in the shared tenant: 
     ```bash
-    hostnamectl set-hostname **<GetVariable name="petname" />-nginx-expansion**.
+    hostnamectl set-hostname {{petname}}-nginx-expansion
     ```
     - Close the Web Shell and log in again to see the changes.
     - Copy and run the curl command in your NGINX instance terminal to register the instance with NGINX One. The Data Plane key is included in the command.
