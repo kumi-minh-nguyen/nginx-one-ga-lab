@@ -1,5 +1,5 @@
 ---
-title: NGINX One Console Lab - Part 5
+title: NGINX One Console Lab - Part 5 (Optional)
 description: Manage NGINX ONE Config Sync Group with NGINX Declarative API
 order: 5
 ---
@@ -51,7 +51,10 @@ You can either install Postman on your computer or use its web version. Check ou
 1. Add NGINX instance into Config Sync Group
    
     - Go to **Lab components**, look for **NGINX Expansion** VM, access it with **Web Shell** method.
-    - Change the VM hostname to make it unique in the shared tenant: `hostnamectl set-hostname` **<GetVariable name="petname" />-nginx-expansion**.
+    - Change the VM hostname to make it unique in the shared tenant: 
+    ```bash
+    hostnamectl set-hostname **<GetVariable name="petname" />-nginx-expansion**.
+    ```
     - Close the Web Shell and log in again to see the changes.
     - Copy and run the curl command in your NGINX instance terminal to register the instance with NGINX One. The Data Plane key is included in the command.
 
