@@ -91,16 +91,16 @@ Config Sync Group you created above. In the command below, take the following ac
     />
 
 
- ```
+ ```bash
  # SSL Termination
  curl -k -v https://10.1.1.4:8443/get | jq && echo
  curl -k https://10.1.1.4:8443/api/f1/drivers?year=2019 | jq && echo
 
- # API Key
+ # API Key, correct key returns data, wrong key will deny access
  curl -k -H "x-api-key:P5FcvLwkyN7eethF" https://10.1.1.4:8443/post | jq && echo
  curl -k -H "x-api-key:P5FcvLwkyN7eeth" https://10.1.1.4:8443/post | jq && echo
 
- # Key-value store
+ # Key-value store, correct key returns data, wrong key will deny access
  curl -k -H "x-kv-api-key:2j1PM5rwgt1" https://10.1.1.4:8443/anything | jq && echo
  curl -k -H "x-kv-api-key:2j1PM5rwgt" https://10.1.1.4:8443/anything | jq && echo
 
