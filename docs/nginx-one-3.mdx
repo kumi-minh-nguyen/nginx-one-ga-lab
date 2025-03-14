@@ -90,30 +90,28 @@ Config Sync Group you created above. In the command below, take the following ac
         name="NGINX Plus"
     />
 
-
- ```bash
- # SSL Termination
- curl -k -v https://10.1.1.4:8443/get | jq && echo
- curl -k https://10.1.1.4:8443/api/f1/drivers?year=2019 | jq && echo
-
- # API Key, correct key returns data, wrong key will deny access
- curl -k -H "x-api-key:P5FcvLwkyN7eethF" https://10.1.1.4:8443/post | jq && echo
- curl -k -H "x-api-key:P5FcvLwkyN7eeth" https://10.1.1.4:8443/post | jq && echo
-
- # Key-value store, correct key returns data, wrong key will deny access
- curl -k -H "x-kv-api-key:2j1PM5rwgt1" https://10.1.1.4:8443/anything | jq && echo
- curl -k -H "x-kv-api-key:2j1PM5rwgt" https://10.1.1.4:8443/anything | jq && echo
-
- # Rate Limit
- for i in {1..10}; do curl -k https://10.1.1.4:8443/get | jq && echo; done
-
- # JWT Authentication
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1aWQiOjIyMn0.L7cAao32jKJGKEgdWyfKzDn6FC-3baJv6Rl1E6lGwY0" ; curl -k -H "Authorization: Bearer $TOKEN" https://10.1.1.4:8443/drivers | jq && echo
-
- # Regex rewriting
- curl -k https://10.1.1.4:8443/delay/5 | jq && echo
-```
-
+     ```bash
+     # SSL Termination
+     curl -k -v https://10.1.1.4:8443/get | jq && echo
+     curl -k https://10.1.1.4:8443/api/f1/drivers?year=2019 | jq && echo
+    
+     # API Key, correct key returns data, wrong key will deny access
+     curl -k -H "x-api-key:P5FcvLwkyN7eethF" https://10.1.1.4:8443/post | jq && echo
+     curl -k -H "x-api-key:P5FcvLwkyN7eeth" https://10.1.1.4:8443/post | jq && echo
+    
+     # Key-value store, correct key returns data, wrong key will deny access
+     curl -k -H "x-kv-api-key:2j1PM5rwgt1" https://10.1.1.4:8443/anything | jq && echo
+     curl -k -H "x-kv-api-key:2j1PM5rwgt" https://10.1.1.4:8443/anything | jq && echo
+    
+     # Rate Limit
+     for i in {1..10}; do curl -k https://10.1.1.4:8443/get | jq && echo; done
+    
+     # JWT Authentication
+        TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1aWQiOjIyMn0.L7cAao32jKJGKEgdWyfKzDn6FC-3baJv6Rl1E6lGwY0" ; curl -k -H "Authorization: Bearer $TOKEN" https://10.1.1.4:8443/drivers | jq && echo
+    
+     # Regex rewriting
+     curl -k https://10.1.1.4:8443/delay/5 | jq && echo
+    ```
 
 ## Manually Configure NGINX in Docker
 
