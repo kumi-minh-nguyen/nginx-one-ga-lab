@@ -50,12 +50,7 @@ You can either install Postman on your computer or use its web version. Check ou
 
 1. Add NGINX instance into Config Sync Group
    
-    - Connect to the "NGINX Expansion" instance in UDF through the Web Shell access method by clicking the *Open Web Shell* button below:
-
-    <UDFComponent
-        name="NGINX Expansion"
-    />
-
+    - Go to Lab Components page and connect to **NGINX Expansion** instance through Web Shell
     - Change the VM hostname to make it unique in the shared tenant, starts with **<GetVariable name="petname"/>**
     ```bash
     hostnamectl set-hostname {{petname}}-nginx-expansion
@@ -110,12 +105,7 @@ You can either install Postman on your computer or use its web version. Check ou
 1. Test your API Gateway
     - Back to NGINX ONE console, check out the configuration generated for you config sync group.
     Review and understand what it is doing.
-    - Back to Web Shell of NGINX Expansion VM
-
-    <UDFComponent
-        name="NGINX Expansion"
-    />
-
+    - Go to Lab Components page and connect to **NGINX Expansion** instance through Web Shell
     - Run this curl commmand
     ```bash
     curl -k -X GET "https://apigw.nginx.lab/petstore/pet/1" | jq
